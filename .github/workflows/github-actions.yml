@@ -1,0 +1,26 @@
+name: Develop Branch
+
+on:
+  push:
+    branches:
+      - 'develop'
+
+jobs:
+
+  test:
+    name: credit pipeline
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          distribution: 'temurin'
+          java-version: '11.x'
+      - name: checkstyle
+        run: mvn checkstyle:check
+      - name: Package application
+        run: mvn -B clean package -DskipTests -Ddockerfile.skip
+#      - name: Run backend test
+#        run: mvn -B clean verify
