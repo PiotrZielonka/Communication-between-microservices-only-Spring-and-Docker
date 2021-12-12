@@ -1,0 +1,51 @@
+version: '3.7'
+
+services:
+  eureka-server:
+    image: com.task/microservice-docker-eureka-server:0.0.1-SNAPSHOT
+    ports:
+      - 8761:8761
+  credit:
+    image: com.task/microservice-docker-credit-exec:0.0.1-SNAPSHOT
+    ports:
+      - 8080:8080
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/task
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=slon
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE= http://eureka-server:8761/eureka
+    depends_on:
+      - eureka-server
+      - db
+  customer:
+    image: com.task/microservice-docker-customer-exec:0.0.1-SNAPSHOT
+    ports:
+      - 8081:8081
+    environment:
+     - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/task
+     - SPRING_DATASOURCE_USERNAME=postgres
+     - SPRING_DATASOURCE_PASSWORD=slon
+     - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE= http://eureka-server:8761/eureka
+#    restart: on-failure
+    depends_on:
+     - eureka-server
+     - db
+
+  db:
+    container_name: db
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: slon
+      POSTGRES_DB: task
+    ports:
+      - 5432:5432
+  pgadmin:
+    container_name: pgadmin4_container
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - 5050:80
