@@ -7,6 +7,7 @@ import com.task.credit.service.dto.CreditCustomerProductDto;
 import com.task.credit.service.dto.CreditDto;
 import com.task.credit.service.mapper.CreditMapper;
 import com.task.customer.service.dto.CustomerDto;
+import com.task.product.service.dto.ProductDto;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -68,6 +69,9 @@ public class CreditServiceImpl implements CreditService {
       creditCustomerProductDto.setCustomerDto(
           getCustomerDtoByCreditIdFromCustomerMicroservices(credit.getId()));
 
+      creditCustomerProductDto.setProductDto(
+          getProductDtoByCreditIdFromProductMicroservices(credit.getId()));
+
       listOfCreditCustomerProductDto.add(creditCustomerProductDto);
     }
 
@@ -77,6 +81,11 @@ public class CreditServiceImpl implements CreditService {
   private CustomerDto getCustomerDtoByCreditIdFromCustomerMicroservices(Long creditId) {
     CustomerDto customerDto = new CustomerDto();
     return restTemplate.getForObject("http://localhost:8081/customers/" + creditId, CustomerDto.class);
+  }
+
+  private ProductDto getProductDtoByCreditIdFromProductMicroservices(Long creditId) {
+    ProductDto productDto = new ProductDto();
+    return restTemplate.getForObject("http://localhost:8082/products/" + creditId, ProductDto.class);
   }
 
   @Override

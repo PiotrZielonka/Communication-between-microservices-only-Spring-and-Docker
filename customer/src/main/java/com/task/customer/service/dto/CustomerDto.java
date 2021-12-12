@@ -16,7 +16,7 @@ public class CustomerDto {
   private String surname;
 
   @NotNull
-  @Size(min = 0, max = 1000)
+  @Size(min = 11, max = 11, message = "Pesel must have 11 characters")
   private String pesel;
 
   @NotNull

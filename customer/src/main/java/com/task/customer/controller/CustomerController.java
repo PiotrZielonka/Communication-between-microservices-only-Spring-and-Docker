@@ -21,7 +21,7 @@ public class CustomerController {
 
   private static final String ENTITY_NAME = "customer";
 
-  private CustomerService customerService;
+  private final CustomerService customerService;
 
 
   public CustomerController(

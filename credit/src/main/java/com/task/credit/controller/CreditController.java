@@ -5,9 +5,11 @@ import com.task.credit.service.CreditService;
 import com.task.credit.service.dto.CreditCustomerProductDto;
 import com.task.credit.service.dto.CreditDto;
 import com.task.customer.service.dto.CustomerDto;
+import com.task.product.service.dto.ProductDto;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -34,8 +36,8 @@ public class CreditController {
   }
 
   @PostMapping("/credits")
-  public ResponseEntity<CreditDto> createCredit(
-      @RequestBody CreditCustomerProductDto creditCustomerProductDto) throws URISyntaxException {
+  public ResponseEntity<CreditDto> createCredit(@Valid @RequestBody
+      CreditCustomerProductDto creditCustomerProductDto) throws URISyntaxException {
     log.debug("REST request to save Credit Customer and Product : {}", creditCustomerProductDto);
     if (creditCustomerProductDto.getId() != null) {
       throw new BadRequestAlertException(
@@ -45,6 +47,9 @@ public class CreditController {
     CreditDto result = creditService.save(creditCustomerProductDto);
 
     saveCustomerToCustomerMicroserviceThereIsCustomerTableCreated(
+        creditCustomerProductDto, result);
+
+    saveProductToProductMicroserviceThereIsProductTableCreated(
         creditCustomerProductDto, result);
 
     return ResponseEntity
@@ -64,6 +69,20 @@ public class CreditController {
       CreditDto result, CustomerDto customerDto) {
 
     customerDto.setCreditId(result.getId());
+  }
+
+  private void saveProductToProductMicroserviceThereIsProductTableCreated(
+      CreditCustomerProductDto creditCustomerProductDto, CreditDto result) {
+
+    ProductDto productDto = creditCustomerProductDto.getProductDto();
+    setCreditIdToProductDtoForRelationShipOneToOne(result, productDto);
+    restTemplate.postForObject("http://localhost:8082/products", productDto, String.class);
+  }
+
+  private void setCreditIdToProductDtoForRelationShipOneToOne(
+      CreditDto result, ProductDto productDto) {
+
+    productDto.setCreditId(result.getId());
   }
 
   @GetMapping("/credits")

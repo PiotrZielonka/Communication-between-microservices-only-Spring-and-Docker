@@ -1,6 +1,7 @@
 package com.task.credit.service.dto;
 
 import com.task.customer.service.dto.CustomerDto;
+import com.task.product.service.dto.ProductDto;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -13,6 +14,8 @@ public class CreditCustomerProductDto {
   private String creditName;
 
   private CustomerDto customer;
+
+  private ProductDto product;
 
   public Long getId() {
     return id;
@@ -36,6 +39,14 @@ public class CreditCustomerProductDto {
 
   public void setCustomerDto(CustomerDto customer) {
     this.customer = customer;
+  }
+
+  public ProductDto getProductDto() {
+    return product;
+  }
+
+  public void setProductDto(ProductDto product) {
+    this.product = product;
   }
 
   @Override
@@ -68,6 +79,7 @@ public class CreditCustomerProductDto {
         + "id=" + id
         + ", creditName='" + creditName + '\''
         + ", customerDto=" + getCustomerDto()
+        + ", productDto=" + getProductDto()
         + '}';
   }
 

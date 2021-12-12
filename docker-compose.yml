@@ -26,10 +26,21 @@ services:
      - SPRING_DATASOURCE_USERNAME=postgres
      - SPRING_DATASOURCE_PASSWORD=slon
      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE= http://eureka-server:8761/eureka
-#    restart: on-failure
     depends_on:
      - eureka-server
      - db
+  product:
+    image: com.task/microservice-docker-product-exec:0.0.1-SNAPSHOT
+    ports:
+      - 8082:8082
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/task
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=slon
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE= http://eureka-server:8761/eureka
+    depends_on:
+      - eureka-server
+      - db
 
   db:
     container_name: db
