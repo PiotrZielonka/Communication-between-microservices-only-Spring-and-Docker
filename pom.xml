@@ -14,5 +14,6 @@
 		<module>eureka-server</module>
 		<module>credit</module>
 		<module>customer</module>
+		<module>product</module>
 	</modules>
 </project>
