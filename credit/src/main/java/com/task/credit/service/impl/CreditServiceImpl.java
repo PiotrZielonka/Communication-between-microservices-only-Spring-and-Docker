@@ -9,9 +9,7 @@ import com.task.credit.service.mapper.CreditMapper;
 import com.task.customer.service.dto.CustomerDto;
 import com.task.product.service.dto.ProductDto;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -86,16 +84,5 @@ public class CreditServiceImpl implements CreditService {
   private ProductDto getProductDtoByCreditIdFromProductMicroservices(Long creditId) {
     ProductDto productDto = new ProductDto();
     return restTemplate.getForObject("http://localhost:8082/products/" + creditId, ProductDto.class);
-  }
-
-  @Override
-  @Transactional(readOnly = true)
-  public List<CreditDto> findAllOnlyCredits() {
-    log.debug("Request to get all only Credits");
-
-    return creditRepository.findAll().stream()
-        .map(creditMapper::toDto)
-        .collect(Collectors.toCollection(LinkedList::new));
-
   }
 }

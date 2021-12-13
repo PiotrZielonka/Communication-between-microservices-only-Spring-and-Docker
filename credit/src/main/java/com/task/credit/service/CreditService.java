@@ -10,5 +10,4 @@ public interface CreditService {
 
   List<CreditCustomerProductDto> findAll();
 
-  List<CreditDto> findAllOnlyCredits();
 }

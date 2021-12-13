@@ -90,10 +90,4 @@ public class CreditController {
     log.debug("REST request to get all Credits Customers and Products");
     return creditService.findAll();
   }
-
-  @GetMapping("/onlyCredits")
-  public List<CreditDto> getOnlyCredits() {
-    log.debug("REST request to get only all Credits");
-    return creditService.findAllOnlyCredits();
-  }
 }
