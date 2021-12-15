@@ -45,7 +45,7 @@ public class ProductControllerTest {
 
 
   @Autowired
-  ProductRepository productRepository;
+  private ProductRepository productRepository;
 
   @Autowired
   private MockMvc restProductMockMvc;
@@ -56,7 +56,7 @@ public class ProductControllerTest {
   @Autowired
   private JdbcTemplate jdbc;
 
-  Long creditIdOfsavedCredit;
+  private Long creditIdOfSavedCredit;
 
 
   @BeforeEach
@@ -64,7 +64,7 @@ public class ProductControllerTest {
     jdbc.update(
         "insert into credit (credit_name) values (?)", DEFAULT_CREDIT_NAME);
 
-    creditIdOfsavedCredit = jdbc.queryForObject(
+    creditIdOfSavedCredit = jdbc.queryForObject(
         "select id from credit where id=(select max(id) from credit)", Long.class);
   }
 
@@ -74,15 +74,15 @@ public class ProductControllerTest {
     // given
     jdbc.update(
         "insert into product (name, product_value, credit_id) values (?,?,?)",
-        DEFAULT_PRODUCT_NAME, DEFAULT_PRODUCT_VALUE, creditIdOfsavedCredit);
+        DEFAULT_PRODUCT_NAME, DEFAULT_PRODUCT_VALUE, creditIdOfSavedCredit);
 
     // when then
-    restProductMockMvc.perform(get(ENTITY_API_URL_FIND_BY_CREDIT_ID, creditIdOfsavedCredit))
+    restProductMockMvc.perform(get(ENTITY_API_URL_FIND_BY_CREDIT_ID, creditIdOfSavedCredit))
         .andExpect(status().isOk())
         .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
         .andExpect(jsonPath("$.name").value(DEFAULT_PRODUCT_NAME))
         .andExpect(jsonPath("$.productValue").value(DEFAULT_PRODUCT_VALUE))
-        .andExpect(jsonPath("$.creditId").value(creditIdOfsavedCredit));
+        .andExpect(jsonPath("$.creditId").value(creditIdOfSavedCredit));
   }
 
   @Test
@@ -103,7 +103,7 @@ public class ProductControllerTest {
     ProductDto productDto = new ProductDto();
     productDto.setName(DEFAULT_PRODUCT_NAME);
     productDto.setProductValue(DEFAULT_PRODUCT_VALUE);
-    productDto.setCreditId(creditIdOfsavedCredit);
+    productDto.setCreditId(creditIdOfSavedCredit);
 
     // when
     restProductMockMvc.perform(post(ENTITY_API_URL)
@@ -118,7 +118,7 @@ public class ProductControllerTest {
     assertThat(testProduct.getId()).isNotNull();
     assertThat(testProduct.getName()).isEqualTo(DEFAULT_PRODUCT_NAME);
     assertThat(testProduct.getProductValue()).isEqualTo(DEFAULT_PRODUCT_VALUE);
-    assertThat(testProduct.getCreditId()).isEqualTo(creditIdOfsavedCredit);
+    assertThat(testProduct.getCreditId()).isEqualTo(creditIdOfSavedCredit);
   }
 
   @Test
@@ -127,7 +127,7 @@ public class ProductControllerTest {
     // given
     jdbc.update(
         "insert into product (name, product_value, credit_id) values (?,?,?)",
-        DEFAULT_PRODUCT_NAME, DEFAULT_PRODUCT_VALUE, creditIdOfsavedCredit);
+        DEFAULT_PRODUCT_NAME, DEFAULT_PRODUCT_VALUE, creditIdOfSavedCredit);
 
     Long productIdOfsavedProduct = jdbc.queryForObject(
         "select id from product where id=(select max(id) from product)", Long.class);
@@ -140,7 +140,7 @@ public class ProductControllerTest {
     productDto.setId(productIdOfsavedProduct);
     productDto.setName(DEFAULT_PRODUCT_NAME);
     productDto.setProductValue(DEFAULT_PRODUCT_VALUE);
-    productDto.setCreditId(creditIdOfsavedCredit);
+    productDto.setCreditId(creditIdOfSavedCredit);
 
     // when
     assertThrows(NestedServletException.class, () -> {
@@ -160,12 +160,12 @@ public class ProductControllerTest {
   void checkNameIsRequierd() throws Exception {
     // given
     final int databaseSizeBeforeCreate = jdbc.queryForObject(
-        "select count(*) from customer", int.class);
+        "select count(*) from product", int.class);
 
     ProductDto productDto = new ProductDto();
     productDto.setName(null);
     productDto.setProductValue(DEFAULT_PRODUCT_VALUE);
-    productDto.setCreditId(creditIdOfsavedCredit);
+    productDto.setCreditId(creditIdOfSavedCredit);
 
     // when
     restProductMockMvc.perform(post(ENTITY_API_URL)
@@ -183,12 +183,12 @@ public class ProductControllerTest {
   void checkProductValueIsRequierd() throws Exception {
     // given
     final int databaseSizeBeforeCreate = jdbc.queryForObject(
-        "select count(*) from customer", int.class);
+        "select count(*) from product", int.class);
 
     ProductDto productDto = new ProductDto();
     productDto.setName(DEFAULT_PRODUCT_NAME);
     productDto.setProductValue(null);
-    productDto.setCreditId(creditIdOfsavedCredit);
+    productDto.setCreditId(creditIdOfSavedCredit);
 
     // when
     restProductMockMvc.perform(post(ENTITY_API_URL)
@@ -206,7 +206,7 @@ public class ProductControllerTest {
   void checkCreditIdIsRequierd() throws Exception {
     // given
     final int databaseSizeBeforeCreate = jdbc.queryForObject(
-        "select count(*) from customer", int.class);
+        "select count(*) from product", int.class);
 
     ProductDto productDto = new ProductDto();
     productDto.setName(DEFAULT_PRODUCT_NAME);

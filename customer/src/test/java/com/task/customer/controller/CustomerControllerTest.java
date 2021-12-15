@@ -47,7 +47,7 @@ public class CustomerControllerTest {
   private static final String ENTITY_API_URL_FIND_BY_CREDIT_ID = ENTITY_API_URL + "/{id}";
 
   @Autowired
-  CustomerRepository customerRepository;
+  private CustomerRepository customerRepository;
 
   @Autowired
   private MockMvc restCustomerMockMvc;
@@ -58,7 +58,7 @@ public class CustomerControllerTest {
   @Autowired
   private JdbcTemplate jdbc;
 
-  Long creditIdOfsavedCredit;
+  private Long creditIdOfSavedCredit;
 
 
   @BeforeEach
@@ -66,7 +66,7 @@ public class CustomerControllerTest {
     jdbc.update(
         "insert into credit (credit_name) values (?)", DEFAULT_CREDIT_NAME);
 
-    creditIdOfsavedCredit = jdbc.queryForObject(
+    creditIdOfSavedCredit = jdbc.queryForObject(
         "select id from credit where id=(select max(id) from credit)", Long.class);
   }
 
@@ -76,16 +76,20 @@ public class CustomerControllerTest {
     // given
     jdbc.update(
         "insert into customer (first_name, surname, pesel, credit_id) values (?,?,?,?)",
-        DEFAULT_FIRST_NAME, DEFAULT_SURNAME, DEFAULT_PESEL, creditIdOfsavedCredit);
+        DEFAULT_FIRST_NAME, DEFAULT_SURNAME, DEFAULT_PESEL, creditIdOfSavedCredit);
+
+    Long idOfsavedCustomer = jdbc.queryForObject(
+        "select id from customer where id=(select max(id) from customer)", Long.class);
 
     // when then
-    restCustomerMockMvc.perform(get(ENTITY_API_URL_FIND_BY_CREDIT_ID, creditIdOfsavedCredit))
+    restCustomerMockMvc.perform(get(ENTITY_API_URL_FIND_BY_CREDIT_ID, creditIdOfSavedCredit))
         .andExpect(status().isOk())
         .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(jsonPath("$.id").value(idOfsavedCustomer))
         .andExpect(jsonPath("$.firstName").value(DEFAULT_FIRST_NAME))
         .andExpect(jsonPath("$.surname").value(DEFAULT_SURNAME))
         .andExpect(jsonPath("$.pesel").value(DEFAULT_PESEL))
-        .andExpect(jsonPath("$.creditId").value(creditIdOfsavedCredit));
+        .andExpect(jsonPath("$.creditId").value(creditIdOfSavedCredit));
   }
 
   @Test
@@ -107,7 +111,7 @@ public class CustomerControllerTest {
     customerDto.setFirstName(DEFAULT_FIRST_NAME);
     customerDto.setSurname(DEFAULT_SURNAME);
     customerDto.setPesel(DEFAULT_PESEL);
-    customerDto.setCreditId(creditIdOfsavedCredit);
+    customerDto.setCreditId(creditIdOfSavedCredit);
 
     // when
     restCustomerMockMvc.perform(post(ENTITY_API_URL)
@@ -123,7 +127,7 @@ public class CustomerControllerTest {
     assertThat(testCustomer.getFirstName()).isEqualTo(DEFAULT_FIRST_NAME);
     assertThat(testCustomer.getSurname()).isEqualTo(DEFAULT_SURNAME);
     assertThat(testCustomer.getPesel()).isEqualTo(DEFAULT_PESEL);
-    assertThat(testCustomer.getCreditId()).isEqualTo(creditIdOfsavedCredit);
+    assertThat(testCustomer.getCreditId()).isEqualTo(creditIdOfSavedCredit);
   }
 
   @Test
@@ -132,7 +136,7 @@ public class CustomerControllerTest {
     // given
     jdbc.update(
         "insert into customer (first_name, surname, pesel, credit_id) values (?,?,?,?)",
-        DEFAULT_FIRST_NAME, DEFAULT_SURNAME, DEFAULT_PESEL, creditIdOfsavedCredit);
+        DEFAULT_FIRST_NAME, DEFAULT_SURNAME, DEFAULT_PESEL, creditIdOfSavedCredit);
 
     Long customerIdOfsavedCustomer = jdbc.queryForObject(
         "select id from customer where id=(select max(id) from customer)", Long.class);
@@ -146,7 +150,7 @@ public class CustomerControllerTest {
     customerDto.setFirstName(DEFAULT_FIRST_NAME);
     customerDto.setSurname(DEFAULT_SURNAME);
     customerDto.setPesel(DEFAULT_PESEL);
-    customerDto.setCreditId(creditIdOfsavedCredit);
+    customerDto.setCreditId(creditIdOfSavedCredit);
 
     // when
     assertThrows(NestedServletException.class, () -> {
@@ -171,7 +175,7 @@ public class CustomerControllerTest {
     customerDto.setFirstName(null);
     customerDto.setSurname(DEFAULT_SURNAME);
     customerDto.setPesel(DEFAULT_PESEL);
-    customerDto.setCreditId(creditIdOfsavedCredit);
+    customerDto.setCreditId(creditIdOfSavedCredit);
 
     // when
     restCustomerMockMvc.perform(post(ENTITY_API_URL)
@@ -195,7 +199,7 @@ public class CustomerControllerTest {
     customerDto.setFirstName(DEFAULT_FIRST_NAME);
     customerDto.setSurname(null);
     customerDto.setPesel(DEFAULT_PESEL);
-    customerDto.setCreditId(creditIdOfsavedCredit);
+    customerDto.setCreditId(creditIdOfSavedCredit);
 
     // when
     restCustomerMockMvc.perform(post(ENTITY_API_URL)
@@ -219,7 +223,7 @@ public class CustomerControllerTest {
     customerDto.setFirstName(DEFAULT_FIRST_NAME);
     customerDto.setSurname(DEFAULT_SURNAME);
     customerDto.setPesel(null);
-    customerDto.setCreditId(creditIdOfsavedCredit);
+    customerDto.setCreditId(creditIdOfSavedCredit);
 
     // when
     restCustomerMockMvc.perform(post(ENTITY_API_URL)
@@ -267,7 +271,7 @@ public class CustomerControllerTest {
     customerDto.setFirstName(DEFAULT_FIRST_NAME);
     customerDto.setSurname(DEFAULT_SURNAME);
     customerDto.setPesel("123456789012");
-    customerDto.setCreditId(creditIdOfsavedCredit);
+    customerDto.setCreditId(creditIdOfSavedCredit);
 
     // when
     restCustomerMockMvc.perform(post(ENTITY_API_URL)
