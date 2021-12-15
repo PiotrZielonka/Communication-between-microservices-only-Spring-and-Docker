@@ -20,7 +20,7 @@ jobs:
           java-version: '11.x'
       - name: checkstyle
         run: mvn checkstyle:check
+      - name: Run backend test
+        run: mvnw -B clean verify -Ddockerfile.skip
       - name: Package application
         run: mvn -B clean package -DskipTests -Ddockerfile.skip
-#      - name: Run backend test
-#        run: mvn -B clean verify

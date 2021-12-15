@@ -17,7 +17,7 @@ public class Product {
 
   @NotNull
   @Min(value = 0)
-  @Max(value = 1000000000)
+  @Max(value = 1000000000, message = "Product value can't be bigger than 1000000000")
   private Integer productValue;
 
   @NotNull

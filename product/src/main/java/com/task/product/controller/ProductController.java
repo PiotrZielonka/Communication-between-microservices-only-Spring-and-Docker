@@ -8,6 +8,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,8 +42,9 @@ public class ProductController {
   }
 
   @GetMapping("/products/{id}")
-  public Optional<ProductDto> getProductByCreditId(@PathVariable Long id) {
+  public ResponseEntity<ProductDto> getProductByCreditId(@PathVariable Long id) {
     log.debug("REST request to get Product by CreditId");
-    return productService.findByCreditId(id);
+    Optional<ProductDto> productDto = productService.findByCreditId(id);
+    return ResponseEntity.of(productDto);
   }
 }
