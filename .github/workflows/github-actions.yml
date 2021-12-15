@@ -21,6 +21,6 @@ jobs:
       - name: checkstyle
         run: mvn checkstyle:check
       - name: Run backend test
-        run: mvnw -B clean verify -Ddockerfile.skip
+        run: mvnw clean verify -Ddockerfile.skip
       - name: Package application
         run: mvn -B clean package -DskipTests -Ddockerfile.skip
