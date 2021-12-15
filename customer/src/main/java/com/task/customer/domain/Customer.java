@@ -87,28 +87,32 @@ public class Customer {
 
     Customer customer = (Customer) o;
 
-    if (!id.equals(customer.id)) {
+    if (getId() != null ? !getId().equals(customer.getId()) : customer.getId() != null) {
       return false;
     }
-    if (!firstName.equals(customer.firstName)) {
+    if (getFirstName() != null ? !getFirstName().equals(customer.getFirstName())
+        : customer.getFirstName() != null) {
       return false;
     }
-    if (!surname.equals(customer.surname)) {
+    if (getSurname() != null ? !getSurname().equals(customer.getSurname())
+        : customer.getSurname() != null) {
       return false;
     }
-    if (!pesel.equals(customer.pesel)) {
+    if (getPesel() != null ? !getPesel().equals(customer.getPesel())
+        : customer.getPesel() != null) {
       return false;
     }
-    return creditId.equals(customer.creditId);
+    return getCreditId() != null ? getCreditId().equals(customer.getCreditId())
+        : customer.getCreditId() == null;
   }
 
   @Override
   public int hashCode() {
-    int result = id.hashCode();
-    result = 31 * result + firstName.hashCode();
-    result = 31 * result + surname.hashCode();
-    result = 31 * result + pesel.hashCode();
-    result = 31 * result + creditId.hashCode();
+    int result = getId() != null ? getId().hashCode() : 0;
+    result = 31 * result + (getFirstName() != null ? getFirstName().hashCode() : 0);
+    result = 31 * result + (getSurname() != null ? getSurname().hashCode() : 0);
+    result = 31 * result + (getPesel() != null ? getPesel().hashCode() : 0);
+    result = 31 * result + (getCreditId() != null ? getCreditId().hashCode() : 0);
     return result;
   }
 

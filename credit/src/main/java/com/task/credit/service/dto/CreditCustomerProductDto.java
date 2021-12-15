@@ -54,22 +54,31 @@ public class CreditCustomerProductDto {
     if (this == o) {
       return true;
     }
-    if (o == null || getClass() != o.getClass()) {
+    if (!(o instanceof CreditCustomerProductDto)) {
       return false;
     }
 
-    CreditCustomerProductDto creditCustomerProductDto = (CreditCustomerProductDto) o;
+    CreditCustomerProductDto that = (CreditCustomerProductDto) o;
 
-    if (!id.equals(creditCustomerProductDto.id)) {
+    if (getId() != null ? !getId().equals(that.getId()) : that.getId() != null) {
       return false;
     }
-    return creditName.equals(creditCustomerProductDto.creditName);
+    if (getCreditName() != null ? !getCreditName().equals(that.getCreditName())
+        : that.getCreditName() != null) {
+      return false;
+    }
+    if (customer != null ? !customer.equals(that.customer) : that.customer != null) {
+      return false;
+    }
+    return product != null ? product.equals(that.product) : that.product == null;
   }
 
   @Override
   public int hashCode() {
-    int result = id.hashCode();
-    result = 31 * result + creditName.hashCode();
+    int result = getId() != null ? getId().hashCode() : 0;
+    result = 31 * result + (getCreditName() != null ? getCreditName().hashCode() : 0);
+    result = 31 * result + (customer != null ? customer.hashCode() : 0);
+    result = 31 * result + (product != null ? product.hashCode() : 0);
     return result;
   }
 

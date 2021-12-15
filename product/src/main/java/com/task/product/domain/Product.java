@@ -70,30 +70,32 @@ public class Product {
     if (this == o) {
       return true;
     }
-    if (o == null || getClass() != o.getClass()) {
+    if (!(o instanceof Product)) {
       return false;
     }
 
     Product product = (Product) o;
 
-    if (!id.equals(product.id)) {
+    if (getId() != null ? !getId().equals(product.getId()) : product.getId() != null) {
       return false;
     }
-    if (!name.equals(product.name)) {
+    if (getName() != null ? !getName().equals(product.getName()) : product.getName() != null) {
       return false;
     }
-    if (!productValue.equals(product.productValue)) {
+    if (getProductValue() != null ? !getProductValue().equals(product.getProductValue())
+        : product.getProductValue() != null) {
       return false;
     }
-    return creditId.equals(product.creditId);
+    return getCreditId() != null ? getCreditId().equals(product.getCreditId())
+        : product.getCreditId() == null;
   }
 
   @Override
   public int hashCode() {
-    int result = id.hashCode();
-    result = 31 * result + name.hashCode();
-    result = 31 * result + productValue.hashCode();
-    result = 31 * result + creditId.hashCode();
+    int result = getId() != null ? getId().hashCode() : 0;
+    result = 31 * result + (getName() != null ? getName().hashCode() : 0);
+    result = 31 * result + (getProductValue() != null ? getProductValue().hashCode() : 0);
+    result = 31 * result + (getCreditId() != null ? getCreditId().hashCode() : 0);
     return result;
   }
 

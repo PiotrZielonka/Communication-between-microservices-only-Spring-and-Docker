@@ -27,7 +27,9 @@
 		<junit-platform-launcher.version>1.7.0</junit-platform-launcher.version>
 		<junit-jupiter-api.version>5.7.0</junit-jupiter-api.version>
 		<junit-jupiter-engine.version>5.7.0</junit-jupiter-engine.version>
+		<jacoco-maven-plugin.version>0.8.3</jacoco-maven-plugin.version>
 		<jackson-databind.version>2.13.0</jackson-databind.version>
+		<equalsverifier.version>3.8</equalsverifier.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -104,6 +106,12 @@
 			<artifactId>jackson-databind</artifactId>
 			<version>${jackson-databind.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>nl.jqno.equalsverifier</groupId>
+			<artifactId>equalsverifier</artifactId>
+			<version>${equalsverifier.version}</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<dependencyManagement>
@@ -176,10 +184,10 @@
 					</buildArgs>
 				</configuration>
 			</plugin>
-				<plugin>
+			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.8.3</version>
+				<version>${jacoco-maven-plugin.version}</version>
 				<executions>
 					<execution>
 						<goals>

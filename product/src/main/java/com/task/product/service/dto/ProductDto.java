@@ -15,7 +15,7 @@ public class ProductDto {
 
   @NotNull
   @Min(value = 0)
-  @Max(value = 1000000000)
+  @Max(value = 1000000000, message = "Product value can't be bigger than 1000000000")
   private Integer productValue;
 
   @NotNull
@@ -58,30 +58,32 @@ public class ProductDto {
     if (this == o) {
       return true;
     }
-    if (o == null || getClass() != o.getClass()) {
+    if (!(o instanceof ProductDto)) {
       return false;
     }
 
     ProductDto that = (ProductDto) o;
 
-    if (!id.equals(that.id)) {
+    if (getId() != null ? !getId().equals(that.getId()) : that.getId() != null) {
       return false;
     }
-    if (!name.equals(that.name)) {
+    if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null) {
       return false;
     }
-    if (!productValue.equals(that.productValue)) {
+    if (getProductValue() != null ? !getProductValue().equals(that.getProductValue())
+        : that.getProductValue() != null) {
       return false;
     }
-    return creditId.equals(that.creditId);
+    return getCreditId() != null ? getCreditId().equals(that.getCreditId())
+        : that.getCreditId() == null;
   }
 
   @Override
   public int hashCode() {
-    int result = id.hashCode();
-    result = 31 * result + name.hashCode();
-    result = 31 * result + productValue.hashCode();
-    result = 31 * result + creditId.hashCode();
+    int result = getId() != null ? getId().hashCode() : 0;
+    result = 31 * result + (getName() != null ? getName().hashCode() : 0);
+    result = 31 * result + (getProductValue() != null ? getProductValue().hashCode() : 0);
+    result = 31 * result + (getCreditId() != null ? getCreditId().hashCode() : 0);
     return result;
   }
 

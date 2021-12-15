@@ -34,22 +34,23 @@ public class CreditDto {
     if (this == o) {
       return true;
     }
-    if (o == null || getClass() != o.getClass()) {
+    if (!(o instanceof CreditDto)) {
       return false;
     }
 
     CreditDto creditDto = (CreditDto) o;
 
-    if (!id.equals(creditDto.id)) {
+    if (getId() != null ? !getId().equals(creditDto.getId()) : creditDto.getId() != null) {
       return false;
     }
-    return creditName.equals(creditDto.creditName);
+    return getCreditName() != null ? getCreditName().equals(creditDto.getCreditName())
+        : creditDto.getCreditName() == null;
   }
 
   @Override
   public int hashCode() {
-    int result = id.hashCode();
-    result = 31 * result + creditName.hashCode();
+    int result = getId() != null ? getId().hashCode() : 0;
+    result = 31 * result + (getCreditName() != null ? getCreditName().hashCode() : 0);
     return result;
   }
 

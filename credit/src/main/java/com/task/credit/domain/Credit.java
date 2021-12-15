@@ -43,22 +43,23 @@ public class Credit {
     if (this == o) {
       return true;
     }
-    if (o == null || getClass() != o.getClass()) {
+    if (!(o instanceof Credit)) {
       return false;
     }
 
     Credit credit = (Credit) o;
 
-    if (!id.equals(credit.id)) {
+    if (getId() != null ? !getId().equals(credit.getId()) : credit.getId() != null) {
       return false;
     }
-    return creditName.equals(credit.creditName);
+    return getCreditName() != null ? getCreditName().equals(credit.getCreditName())
+        : credit.getCreditName() == null;
   }
 
   @Override
   public int hashCode() {
-    int result = id.hashCode();
-    result = 31 * result + creditName.hashCode();
+    int result = getId() != null ? getId().hashCode() : 0;
+    result = 31 * result + (getCreditName() != null ? getCreditName().hashCode() : 0);
     return result;
   }
 
