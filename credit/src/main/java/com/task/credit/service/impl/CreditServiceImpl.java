@@ -65,10 +65,10 @@ public class CreditServiceImpl implements CreditService {
           = creditMapper.toDtoCreditCustomerProductDto(credit);
 
       creditCustomerProductDto.setCustomerDto(
-          getCustomerDtoByCreditIdFromCustomerMicroservices(credit.getId()));
+          getCustomerDtoByCreditIdFromCustomerMicroservice(credit.getId()));
 
       creditCustomerProductDto.setProductDto(
-          getProductDtoByCreditIdFromProductMicroservices(credit.getId()));
+          getProductDtoByCreditIdFromProductMicroservice(credit.getId()));
 
       listOfCreditCustomerProductDto.add(creditCustomerProductDto);
     }
@@ -76,11 +76,11 @@ public class CreditServiceImpl implements CreditService {
     return listOfCreditCustomerProductDto;
   }
 
-  private CustomerDto getCustomerDtoByCreditIdFromCustomerMicroservices(Long creditId) {
+  private CustomerDto getCustomerDtoByCreditIdFromCustomerMicroservice(Long creditId) {
     return restTemplate.getForObject("http://localhost:8081/customers/" + creditId, CustomerDto.class);
   }
 
-  private ProductDto getProductDtoByCreditIdFromProductMicroservices(Long creditId) {
+  private ProductDto getProductDtoByCreditIdFromProductMicroservice(Long creditId) {
     return restTemplate.getForObject("http://localhost:8082/products/" + creditId, ProductDto.class);
   }
 }
