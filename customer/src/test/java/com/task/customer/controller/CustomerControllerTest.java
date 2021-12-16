@@ -29,7 +29,7 @@ import org.springframework.web.util.NestedServletException;
 @ActiveProfiles("test")
 @IntegrationTest
 @AutoConfigureMockMvc
-public class CustomerControllerTest {
+class CustomerControllerTest {
 
   // Credit
   private static final String DEFAULT_CREDIT_NAME = "AAAAAAAAAA";

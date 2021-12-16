@@ -77,12 +77,10 @@ public class CreditServiceImpl implements CreditService {
   }
 
   private CustomerDto getCustomerDtoByCreditIdFromCustomerMicroservices(Long creditId) {
-    CustomerDto customerDto = new CustomerDto();
     return restTemplate.getForObject("http://localhost:8081/customers/" + creditId, CustomerDto.class);
   }
 
   private ProductDto getProductDtoByCreditIdFromProductMicroservices(Long creditId) {
-    ProductDto productDto = new ProductDto();
     return restTemplate.getForObject("http://localhost:8082/products/" + creditId, ProductDto.class);
   }
 }

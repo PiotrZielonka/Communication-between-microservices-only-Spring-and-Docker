@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @ActiveProfiles("test")
 @SpringBootTest(classes = ProductApplication.class)
-public class ProductServiceImplTest {
+class ProductServiceImplTest {
 
   // Credit
   private static final String DEFAULT_CREDIT_NAME = "AAAAAAAAAA";
@@ -53,7 +53,7 @@ public class ProductServiceImplTest {
 
   @Test
   @Transactional
-  public void shouldFindProductByCreditId() throws Exception {
+  void shouldFindProductByCreditId() throws Exception {
     // given
     jdbc.update(
         "insert into product (name, product_value, credit_id) values (?,?,?)",
@@ -75,7 +75,7 @@ public class ProductServiceImplTest {
 
   @Test
   @Transactional
-  public void shouldSaveProduct() throws Exception {
+  void shouldSaveProduct() throws Exception {
     // given
     ProductDto productDto = new ProductDto();
     productDto.setName(DEFAULT_PRODUCT_NAME);
@@ -93,7 +93,9 @@ public class ProductServiceImplTest {
         "select id from product where id=(select max(id) from product)", Long.class);
 
     // then
-    assertThat(creditDatabaseSizeBeforeSave).isEqualTo(creditDatabaseSizeBeforeSave);
+    final int creditDatabaseSizeAfterSave = jdbc.queryForObject(
+        "select count(*) from credit", int.class);
+    assertThat(creditDatabaseSizeBeforeSave).isEqualTo(creditDatabaseSizeAfterSave);
     List<Product> productList = (List<Product>) productRepository.findAll();
     assertThat(productList).hasSize(productDatabaseSizeBeforeSave + 1);
     Product testProduct = productList.get(productList.size() - 1);
@@ -104,7 +106,7 @@ public class ProductServiceImplTest {
   }
 
   @Test
-  public void shouldNotSaveProductTwiceBecauseInOneToOneRelationship() throws Exception {
+  void shouldNotSaveProductTwiceBecauseInOneToOneRelationship() throws Exception {
     // given
     ProductDto productDto = new ProductDto();
     productDto.setName(DEFAULT_PRODUCT_NAME);
@@ -126,7 +128,9 @@ public class ProductServiceImplTest {
       productServiceImpl.save(productDto);
     });
 
-    assertThat(creditDatabaseSizeBeforeSave).isEqualTo(creditDatabaseSizeBeforeSave);
+    final int creditDatabaseSizeAfterSave = jdbc.queryForObject(
+        "select count(*) from credit", int.class);
+    assertThat(creditDatabaseSizeBeforeSave).isEqualTo(creditDatabaseSizeAfterSave);
     List<Product> productList = (List<Product>) productRepository.findAll();
     assertThat(productList).hasSize(productDatabaseSizeBeforeSave + 1);
     Product testProduct = productList.get(productList.size() - 1);

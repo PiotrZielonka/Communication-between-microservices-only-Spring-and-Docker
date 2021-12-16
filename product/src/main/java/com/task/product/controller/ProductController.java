@@ -1,9 +1,8 @@
 package com.task.product.controller;
 
-import com.task.product.controller.errors.BadRequestAlertException;
+import com.task.product.controller.errors.IdInDtoExist;
 import com.task.product.service.ProductService;
 import com.task.product.service.dto.ProductDto;
-import java.net.URISyntaxException;
 import java.util.Optional;
 import javax.validation.Valid;
 import org.slf4j.Logger;
@@ -31,12 +30,10 @@ public class ProductController {
   }
 
   @PostMapping("/products")
-  public void createProduct(
-      @Valid @RequestBody ProductDto productDto) throws URISyntaxException {
+  public void createProduct(@Valid @RequestBody ProductDto productDto) {
     log.debug("REST request to save Product : {}", productDto);
     if (productDto.getId() != null) {
-      throw new BadRequestAlertException(
-          "A new product cannot already have an ID", ENTITY_NAME, "idexists");
+      throw new IdInDtoExist();
     }
     productService.save(productDto);
   }

@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.test.context.ActiveProfiles;
 
 @ActiveProfiles("test")
-public class CreditDtoTest {
+class CreditDtoTest {
 
   @Test
   void simpleEqualsContractsCreditDto() throws Exception {

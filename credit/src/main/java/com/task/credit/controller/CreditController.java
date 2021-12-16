@@ -1,9 +1,9 @@
 package com.task.credit.controller;
 
-import com.task.credit.controller.errors.BadRequestAlertException;
 import com.task.credit.service.CreditService;
 import com.task.credit.service.dto.CreditCustomerProductDto;
 import com.task.credit.service.dto.CreditDto;
+import com.task.customer.controller.errors.IdInDtoExist;
 import com.task.customer.service.dto.CustomerDto;
 import com.task.product.service.dto.ProductDto;
 import java.net.URI;
@@ -40,8 +40,7 @@ public class CreditController {
       CreditCustomerProductDto creditCustomerProductDto) throws URISyntaxException {
     log.debug("REST request to save Credit Customer and Product : {}", creditCustomerProductDto);
     if (creditCustomerProductDto.getId() != null) {
-      throw new BadRequestAlertException(
-          "A new credit customer product cannot already have an ID", ENTITY_NAME, "idexists");
+      throw new IdInDtoExist();
     }
 
     CreditDto result = creditService.save(creditCustomerProductDto);

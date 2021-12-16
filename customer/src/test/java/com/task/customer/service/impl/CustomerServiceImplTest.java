@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @ActiveProfiles("test")
 @SpringBootTest(classes = CustomerApplication.class)
-public class CustomerServiceImplTest {
+class CustomerServiceImplTest {
 
   // Credit
   private static final String DEFAULT_CREDIT_NAME = "AAAAAAAAAA";
@@ -56,7 +56,7 @@ public class CustomerServiceImplTest {
 
   @Test
   @Transactional
-  public void shouldFindCustomerByCreditId() throws Exception {
+  void shouldFindCustomerByCreditId() throws Exception {
     // given
     jdbc.update(
         "insert into customer (first_name, surname, pesel, credit_id) values (?,?,?,?)",
@@ -79,7 +79,7 @@ public class CustomerServiceImplTest {
 
   @Test
   @Transactional
-  public void shouldSaveCustomer() throws Exception {
+  void shouldSaveCustomer() throws Exception {
     // given
     CustomerDto customerDto = new CustomerDto();
     customerDto.setFirstName(DEFAULT_FIRST_NAME);
@@ -98,7 +98,9 @@ public class CustomerServiceImplTest {
         "select id from customer where id=(select max(id) from customer)", Long.class);
 
     // then
-    assertThat(creditDatabaseSizeBeforeSave).isEqualTo(creditDatabaseSizeBeforeSave);
+    final int creditDatabaseSizeAfterSave = jdbc.queryForObject(
+        "select count(*) from credit", int.class);
+    assertThat(creditDatabaseSizeBeforeSave).isEqualTo(creditDatabaseSizeAfterSave);
     List<Customer> customerList = (List<Customer>) customerRepository.findAll();
     assertThat(customerList).hasSize(customerDatabaseSizeBeforeSave + 1);
     Customer testCustomer = customerList.get(customerList.size() - 1);
@@ -109,7 +111,7 @@ public class CustomerServiceImplTest {
   }
 
   @Test
-  public void shouldNotSaveCustomerTwiceBecauseInOneToOneRelationship() throws Exception {
+  void shouldNotSaveCustomerTwiceBecauseInOneToOneRelationship() throws Exception {
     // given
     CustomerDto customerDto = new CustomerDto();
     customerDto.setFirstName(DEFAULT_FIRST_NAME);
@@ -131,7 +133,9 @@ public class CustomerServiceImplTest {
       customerServiceImpl.save(customerDto);
     });
 
-    assertThat(creditDatabaseSizeBeforeSave).isEqualTo(creditDatabaseSizeBeforeSave);
+    final int creditDatabaseSizeAfterSave = jdbc.queryForObject(
+        "select count(*) from credit", int.class);
+    assertThat(creditDatabaseSizeBeforeSave).isEqualTo(creditDatabaseSizeAfterSave);
     List<Customer> customerList = (List<Customer>) customerRepository.findAll();
     assertThat(customerList).hasSize(customerDatabaseSizeBeforeSave + 1);
     Customer testCustomer = customerList.get(customerList.size() - 1);
