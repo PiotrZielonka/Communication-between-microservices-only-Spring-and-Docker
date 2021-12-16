@@ -57,10 +57,10 @@ public class CreditController {
 
     CreditDto result = creditService.save(creditCustomerProductDto);
 
-    saveCustomerToCustomerMicroserviceThereIsCustomerTableCreated(
+    saveCustomerToCustomerMicroserviceThereIsCustomerTableLogic(
         creditCustomerProductDto, result);
 
-    saveProductToProductMicroserviceThereIsProductTableCreated(
+    saveProductToProductMicroserviceThereIsProductTableLogic(
         creditCustomerProductDto, result);
 
     return ResponseEntity
@@ -68,7 +68,7 @@ public class CreditController {
         .body(result);
   }
 
-  private void saveCustomerToCustomerMicroserviceThereIsCustomerTableCreated(
+  private void saveCustomerToCustomerMicroserviceThereIsCustomerTableLogic(
       CreditCustomerProductDto creditCustomerProductDto, CreditDto result) {
 
     CustomerDto customerDto = creditCustomerProductDto.getCustomerDto();
@@ -92,7 +92,7 @@ public class CreditController {
     customerDto.setCreditId(result.getId());
   }
 
-  private void saveProductToProductMicroserviceThereIsProductTableCreated(
+  private void saveProductToProductMicroserviceThereIsProductTableLogic(
       CreditCustomerProductDto creditCustomerProductDto, CreditDto result) {
 
     ProductDto productDto = creditCustomerProductDto.getProductDto();
