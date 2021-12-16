@@ -19,8 +19,6 @@ public class CustomerController {
 
   private final Logger log = LoggerFactory.getLogger(CustomerController.class);
 
-  private static final String ENTITY_NAME = "customer";
-
   private final CustomerService customerService;
 
 

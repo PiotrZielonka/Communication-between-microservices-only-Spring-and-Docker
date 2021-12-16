@@ -31,8 +31,6 @@ public class CreditController {
 
   private final Logger log = LoggerFactory.getLogger(CreditController.class);
 
-  private static final String ENTITY_NAME = "credit";
-
   private final CreditService creditService;
 
   private final CreditRepository creditRepository;
