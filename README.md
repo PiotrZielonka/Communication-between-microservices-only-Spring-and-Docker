@@ -6,54 +6,44 @@
 
 4. Pod portem 5050 należy skonfigurowania połączenie z bazą danych w narzędziu PgAdmin które uruchomił wcześniej docker z pliku docker-compose
 
-a) logowanie do pgAdmin email: pgadmin4@pgadmin.org hasło admin
+⋅⋅1. Logowanie do pgAdmin email: pgadmin4@pgadmin.org hasło admin
 
-b) Servers > Create > Server
+⋅⋅2. Servers > Create > Server
 
-c) W zakładce General pole Name dowolna nazwa
+⋅⋅3. W zakładce General pole Name dowolna nazwa
 
-d) W zakładce Connection pole Hostname/address port naszego dockera np 192.168.99.100 lub localhost
+⋅⋅4. W zakładce Connection pole Hostname/address port naszego dockera np 192.168.99.100 lub localhost
 
-f) Port 5432
+⋅⋅5. Port 5432
 
-g) Maintenance database postgres
+⋅⋅6. Maintenance database postgres
 
-h) Username postgres
+⋅⋅7. Username postgres
 
-i) Password slon
+⋅⋅8. Password slon
 
-j) Password slon normalnie slon bez polskich znaków
+⋅⋅9. Password slon normalnie slon bez polskich znaków
 
-k) Save
+⋅⋅10. Save
 
-Powinna być baza danych o nazwie task z dostępnymi trzema tabelami credit customer i product jeśli ich nie ma na pewno będą po ponownym uruchomieniu powyższych kroków nie będziemy wtedy musieli postawić serwera bazy danych można też je dodać teraz wpisując polecenie SQL które jest w mikroserwisie Credit src/main/resources schema.sql robimy kopiuj wklej i tworzymy 3 tabele
+⋅⋅⋅Powinna być baza danych o nazwie task z dostępnymi trzema tabelami credit customer i product jeśli ich nie ma na pewno będą po ponownym uruchomieniu powyższych kroków nie ⋅⋅⋅będziemy wtedy musieli postawić serwera bazy danych można też je dodać teraz wpisując polecenie SQL które jest w mikroserwisie Credit src/main/resources schema.sql robimy ⋅⋅⋅kopiuj wklej i tworzymy 3 tabele
 
 5. Poniżej poprawny plik JSON do utworzenia kredytu do bazy danych w Postmanie uderzamy nim pod adres localhost:8080/credits metodą POST w przypadku błędnego wpisania jakiegoś pola wyskoczy błąd walidacji
 
+```json
 {
-
-  "creditName": "The cash loan",
-
+   "creditName": "The cash loan",
    "customerDto": {
-
-     "firstName": "Alice",
-
-     "surname": "Nowak",
-
-     "pesel": "12345678901"
-
+      "firstName": "Alice",
+      "surname": "Nowak",
+      "pesel": "12345678901"
    },
-
-    "productDto": {
-
-     "name": "Ecologic",
-
-     "productValue": 12345
-
+   "productDto": {
+      "name": "Ecologic",
+      "productValue": 12345
    }
-
 }
-
+```
 
 6. Pod adresem localhost:8080/credits możemy pobrać teraz metodą GET kredyty które przed chwilą wprowadziliśmy
 
