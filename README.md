@@ -1,4 +1,4 @@
-# Communication between microservices only Spring + Jdbc + Docker
+# Communication between microservices only Spring and Docker
 
 ## Description
 
@@ -74,11 +74,11 @@ When you use the method GET at localhost:8080/credits you can get all credits. I
 ```
 mvnw clean install
 ```
-3. You are not having the database for testing now that's why you have to use this command below. Use it in the folder Communication between microservices only Spring + Jdbc + Docker. It will cause automatic create images of docker for all microservices and the image for Java 11 this command generates also necessary files of dto Mapstruct.
+3. You are not having the database for testing now that's why you have to use this command below. Use it in the folder Communication between microservices only Spring and Docker. It will cause automatic create images of docker for all microservices and the image for Java 11 this command generates also necessary files of dto Mapstruct.
 ```
 mvnw clean install -DskipTests
 ```
-4. Command below used in the folder Communication between microservices only Spring + Jdbc + Docker will run all microservices, the database PostrgeSQL and tool PgAdmin in docker environment on proper ports. You don't have to install anything on your local computer.
+4. Command below used in the folder Communication between microservices only Spring and Docker will run all microservices, the database PostrgeSQL and tool PgAdmin in docker environment on proper ports. You don't have to install anything on your local computer.
 ```
 docker-compose up
 ```
